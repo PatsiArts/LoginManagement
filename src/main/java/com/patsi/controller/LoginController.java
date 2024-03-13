@@ -2,8 +2,14 @@ package com.patsi.controller;
 
 import com.patsi.bean.LogInSession;
 import com.patsi.bean.Person;
+import com.patsi.bean.UserLogin;
 import com.patsi.service.LoginService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,16 +21,21 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-
-    @PutMapping
-    public String checkLogIn(@RequestParam("userId") String userId, @RequestParam String passwordHashed) {
-        return loginService.checkLogIn(userId, passwordHashed);
+    @PostMapping
+    public String checkLogIn(@RequestBody UserLogin userLogin) {
+        return loginService.checkLogIn(userLogin.getUserId(), userLogin.getLogInPasswordHashed());
     }
 
-    @DeleteMapping
-    public boolean logout(@RequestBody String userId) {
-        return loginService.logout(userId);
-    }
+//    @DeleteMapping
+//    public boolean logout(@RequestBody String userId) {
+//        return loginService.logout(userId);
+//    }
 
+//    @GetMapping
+//    public HttpServletResponse test(HttpServletRequest request, HttpServletResponse rsp) {
+//        rsp.addCookie(new Cookie("ssoToke", "get token"));
+//
+//        return new HttpServletResponse();
+//    }
 
 }

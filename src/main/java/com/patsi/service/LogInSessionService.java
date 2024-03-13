@@ -4,9 +4,12 @@ import com.patsi.bean.LogInSession;
 import com.patsi.bean.Person;
 import com.patsi.repository.PersonRepository;
 import com.patsi.repository.SessionRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 import java.security.SecureRandom;
@@ -28,33 +31,37 @@ public class LogInSessionService {
         sessionRepository.save(logInSession);
         return true;
     }
-
-    public boolean endSession(String userId) {
-        personRepository.deleteById(findPerson(userId).getUid());
+    public List<LogInSession> findAllSessions() {
+        return sessionRepository.findAll();
+    }
+    @Transactional
+    public boolean endSession(UUID uid) {
+        sessionRepository.deleteByCustomerId(uid);
         return false;
     }
 
     public Person findPersonByToken(String token) {
         LogInSession s = sessionRepository.findBySessionToken(token);
         if (s != null) {
-            return personRepository.findById(s.getCustomerID()).orElse(null);
+            System.out.println("s found"+ s.getCustomerId());
+            return personRepository.findById(s.getCustomerId()).orElse(null);
         } else {
             return null;
         }
     }
 
     public Person findPerson(String userId) {
-        return personRepository.findByUserId(userId).stream().findFirst().orElse(null);
+        return personRepository.findByUserId(userId).orElse(null);
     }
 
     public boolean renewSession(String token) {
         LogInSession s = sessionRepository.findBySessionToken(token);
-        Long expiryTime = System.currentTimeMillis() + 10000L;
+        Long expiryTime = System.currentTimeMillis() + 600000L;
         s.setExpiryTime(expiryTime);
         return true;
     }
 
-    Supplier<String> createUserToken = () -> {
+    public String createUserToken () {
         byte[] randomBytes = new byte[24];
         secureRandom.nextBytes(randomBytes);
         return base64Encoder.encodeToString(randomBytes);

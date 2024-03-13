@@ -1,6 +1,7 @@
 package com.patsi.repository;
 
 import com.patsi.bean.LogInSession;
+import jakarta.transaction.Transactional;
 import org.springframework.data.repository.Repository;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface SessionRepository extends Repository<LogInSession, UUID> {
 
     LogInSession findBySessionToken(String token);
 
-    Optional<LogInSession> findByCustomerID(UUID customerID);
+    Optional<LogInSession> findByCustomerId(UUID customerId);
 
-    void deleteById(UUID customerID);
+    void deleteByCustomerId(UUID customerId);
 }
