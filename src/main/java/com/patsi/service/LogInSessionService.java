@@ -40,10 +40,16 @@ public class LogInSessionService {
         return false;
     }
 
+    @Transactional
+    public boolean endSessionByToken(String token) {
+        sessionRepository.deleteBySessionToken(token);
+        return true;
+    }
+
     public Person findPersonByToken(String token) {
-        LogInSession s = sessionRepository.findBySessionToken(token);
+        String sessionToken = token.substring(7);
+        LogInSession s = sessionRepository.findBySessionToken(sessionToken);
         if (s != null) {
-            System.out.println("s found"+ s.getCustomerId());
             return personRepository.findById(s.getCustomerId()).orElse(null);
         } else {
             return null;

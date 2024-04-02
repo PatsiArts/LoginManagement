@@ -23,7 +23,13 @@ public class LoginController {
 
     @PostMapping
     public String checkLogIn(@RequestBody UserLogin userLogin) {
-        return loginService.checkLogIn(userLogin.getUserId(), userLogin.getLogInPasswordHashed());
+        return loginService.checkLogIn(userLogin);
+    }
+
+    @PostMapping("/logout")
+    public boolean logOut(String token) {
+        loginService.logOut(token);
+        return true;
     }
 
 //    @DeleteMapping

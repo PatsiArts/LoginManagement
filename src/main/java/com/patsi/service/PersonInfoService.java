@@ -15,7 +15,7 @@ public class PersonInfoService {
 
     @Autowired
     PersonRepository personRepository;
-    Logger log = LoggerFactory.getLogger(LoggingInterceptor.class);
+    Logger log = LoggerFactory.getLogger(PersonInfoService.class);
 
     //Check if useId exists
     public boolean getPerson(String userId) {
@@ -29,7 +29,7 @@ public class PersonInfoService {
 
     //Register Person
     public boolean registerPerson(Person person) {
-        System.out.println("In service person userId " + person.getUserId());
+        log.info("In service person userId " + person.getUserId());
         if (getPerson(person.getUserId())) {
             return false;
         } else {
@@ -39,9 +39,6 @@ public class PersonInfoService {
     }
 
     public void deletePeron(Person person) {
-        System.out.println("Service");
-        System.out.println(person);
-        System.out.println(person.getUid());
         personRepository.deleteById(person.getUid());
     }
 }
