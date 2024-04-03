@@ -18,4 +18,5 @@ public interface SessionRepository extends Repository<LogInSession, UUID> {
     Optional<LogInSession> findByCustomerId(UUID customerId);
 
     void deleteByCustomerId(UUID customerId);
+    void deleteBySessionToken(String token);
 }

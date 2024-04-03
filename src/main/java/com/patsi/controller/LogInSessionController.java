@@ -19,7 +19,12 @@ public class LogInSessionController {
     LogInSessionService logInSessionService;
 
     @GetMapping
-    public ResponseEntity<String> findPersonByToken(@RequestHeader(AUTHORIZATION) String token) {
+    public Person findPersonByToken(@RequestHeader(AUTHORIZATION) String token) {
+        return logInSessionService.findPersonByToken(token);
+    }
+
+    @GetMapping("/getPersonUid")
+    public ResponseEntity<String> findPersonUidByToken(@RequestHeader(AUTHORIZATION) String token) {
         Person p = logInSessionService.findPersonByToken(token);
         return (p != null) ? new ResponseEntity<>(p.getUid().toString(), HttpStatus.OK)
             : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");

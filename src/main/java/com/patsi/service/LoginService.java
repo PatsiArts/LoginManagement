@@ -2,8 +2,11 @@ package com.patsi.service;
 
 import com.patsi.bean.Person;
 import com.patsi.bean.LogInSession;
+import com.patsi.bean.UserLogin;
 import com.patsi.repository.PersonRepository;
 import com.patsi.repository.SessionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,11 +21,13 @@ public class LoginService {
     @Autowired
     LogInSessionService logInSessionService;
 
-    public String checkLogIn(String userId, String logInPasswordHashed) {
-        if (logInSessionService.findPerson(userId) != null) {
-            Person p = personRepository.findByUserId(userId).orElse(null);
-            if (p.getLogInPasswordHashed().equals(logInPasswordHashed)) {
-                System.out.println("Successfully authenticated!");
+    Logger log = LoggerFactory.getLogger(LoginService.class);
+
+    public String checkLogIn(UserLogin user) {
+        if (logInSessionService.findPerson(user.getUserId()) != null) {
+            Person p = personRepository.findByUserId(user.getUserId()).orElse(null);
+            if (p.getLogInPasswordHashed().equals(user.getLogInPasswordHashed())) {
+                log.info("Successfully authenticated!");
                 String tmptoken = logInSessionService.createUserToken();
                 Long expiryTime = System.currentTimeMillis() + 600000L ;
                 if (sessionRepository.findByCustomerId(p.getUid()).isPresent()) {
@@ -38,9 +43,11 @@ public class LoginService {
         return null;
     }
 
-//    public boolean logout(@RequestBody String userId) {
-//        return logInSessionService.endSession(userId);
-//    }
+    public boolean logOut(String token) {
+        log.info("In logOut");
+        logInSessionService.endSessionByToken(token);
+        return true;
+    }
 
 
 }

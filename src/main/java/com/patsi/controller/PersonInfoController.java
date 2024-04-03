@@ -24,6 +24,7 @@ public class PersonInfoController {
 
     @GetMapping
     public boolean getPerson(@RequestParam String userId) {
+
         return personInfoService.getPerson(userId);
     }
 
