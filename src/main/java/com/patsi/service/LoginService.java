@@ -5,6 +5,7 @@ import com.patsi.bean.LogInSession;
 import com.patsi.bean.UserLogin;
 import com.patsi.repository.PersonRepository;
 import com.patsi.repository.SessionRepository;
+import com.patsi.utils.DateHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class LoginService {
             if (p.getLogInPasswordHashed().equals(user.getLogInPasswordHashed())) {
                 log.info("Successfully authenticated!");
                 String tmptoken = logInSessionService.createUserToken();
-                Long expiryTime = System.currentTimeMillis() + 600000L ;
+                Long expiryTime = DateHelper.getCurrentDate().getTime() + 600000L ;
                 if (sessionRepository.findByCustomerId(p.getUid()).isPresent()) {
                     logInSessionService.endSession(p.getUid());
                     logInSessionService.createSession(p.getUid(), tmptoken, expiryTime);
