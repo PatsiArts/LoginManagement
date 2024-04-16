@@ -3,6 +3,7 @@ package com.patsi.service;
 import com.patsi.bean.Person;
 import com.patsi.interceptors.LoggingInterceptor;
 import com.patsi.repository.PersonRepository;
+import com.common.service.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ public class PersonInfoService {
     @Autowired
     PersonRepository personRepository;
     Logger log = LoggerFactory.getLogger(PersonInfoService.class);
+    @Autowired
+    private EmailService emailService;
 
     //Check if useId exists
     public boolean getPerson(String userId) {
@@ -34,8 +37,12 @@ public class PersonInfoService {
             return false;
         } else {
             personRepository.save(person);
+            testEmail();
             return true;
         }
+    }
+    public void testEmail (){
+        emailService.sendSimpleMessage("","","");
     }
 
     public void deletePeron(Person person) {
