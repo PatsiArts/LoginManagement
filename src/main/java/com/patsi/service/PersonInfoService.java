@@ -34,18 +34,19 @@ public class PersonInfoService {
     }
 
     //Register Person
-    public boolean registerPerson(Person person) {
+    public boolean registerPerson(Person person) throws MessagingException {
         log.info("In service person userId " + person.getUserId());
         if (getPerson(person.getUserId())) {
             return false;
         } else {
             personRepository.save(person);
+            sendEmailTest(person);
             return true;
         }
     }
 
-    public boolean sendEmailTest() throws MessagingException {
-        Email sighUpEmail = new Email("patsipatsichang@gmail.com",
+    public boolean sendEmailTest(Person p) throws MessagingException {
+        Email sighUpEmail = new Email(p.getEmail(), "Patsi",
             "Sign Up Notification", "Welcome to Smart Home", true);
         emailService.sendEmail(sighUpEmail);
         return true;

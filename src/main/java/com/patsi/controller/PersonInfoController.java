@@ -16,13 +16,8 @@ public class PersonInfoController {
     @Autowired
     PersonInfoService personInfoService;
 
-    @GetMapping("/TestEmail")
-    public void testEmail() throws MessagingException {
-        System.out.println("Test Email");
-        personInfoService.sendEmailTest();
-    }
     @PostMapping
-    public boolean registerPerson(@RequestBody Person person) {
+    public boolean registerPerson(@RequestBody Person person) throws MessagingException{
         System.out.println("In controller person userId " + person.getUserId());
         return personInfoService.registerPerson(person);
     }
