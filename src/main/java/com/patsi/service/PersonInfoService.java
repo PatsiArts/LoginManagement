@@ -1,9 +1,10 @@
 package com.patsi.service;
 
-import com.patsi.bean.Person;
-import com.patsi.interceptors.LoggingInterceptor;
-import com.patsi.repository.PersonRepository;
+import com.common.bean.Email;
 import com.common.service.EmailService;
+import com.patsi.bean.Person;
+import com.patsi.repository.PersonRepository;
+import jakarta.mail.MessagingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,11 @@ public class PersonInfoService {
 
     @Autowired
     PersonRepository personRepository;
-    Logger log = LoggerFactory.getLogger(PersonInfoService.class);
+
     @Autowired
-    private EmailService emailService;
+    EmailService emailService;
+    Logger log = LoggerFactory.getLogger(PersonInfoService.class);
+
 
     //Check if useId exists
     public boolean getPerson(String userId) {
@@ -37,12 +40,15 @@ public class PersonInfoService {
             return false;
         } else {
             personRepository.save(person);
-            testEmail();
             return true;
         }
     }
-    public void testEmail (){
-        emailService.sendSimpleMessage("","","");
+
+    public boolean sendEmailTest() throws MessagingException {
+        Email sighUpEmail = new Email("patsipatsichang@gmail.com",
+            "Sign Up Notification", "Welcome to Smart Home", true);
+        emailService.sendEmail(sighUpEmail);
+        return true;
     }
 
     public void deletePeron(Person person) {

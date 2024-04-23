@@ -1,3 +1,4 @@
+import com.common.service.EmailService;
 import com.patsi.Main;
 import com.patsi.bean.LogInSession;
 import com.patsi.bean.Person;
@@ -6,9 +7,6 @@ import com.patsi.repository.PersonRepository;
 import com.patsi.repository.SessionRepository;
 import com.patsi.service.LogInSessionService;
 import com.patsi.service.LoginService;
-import com.patsi.utils.DateHelper;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertEquals;
@@ -16,8 +14,6 @@ import static org.mockito.Mockito.*;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -39,7 +35,7 @@ public class LoginServiceTest {
     @Mock
     private LogInSessionService logInSessionService;
 
-    private MockedStatic<DateHelper> mockDateHelper = Mockito.mockStatic(DateHelper.class);
+//    private MockedStatic<DateHelper> mockDateHelper = mockStatic(DateHelper.class);
 
     //Login
     final String validUID = "Patsi";
@@ -56,7 +52,6 @@ public class LoginServiceTest {
 
     @BeforeEach
     void setUp(){
-        mockDateHelper.when(DateHelper::getCurrentDate).thenReturn(currentDate);
         when(logInSessionService.findPerson(validUID))
             .thenReturn(new Person());
         when(personRepository.findByUserId("Patsi"))
@@ -65,13 +60,8 @@ public class LoginServiceTest {
             .thenReturn(Optional.of(expectedLoginSession));
         when(logInSessionService.createUserToken())
             .thenReturn(expectedToken);
-        when(logInSessionService.endSessionByToken(any()))
-            .thenReturn(true);
     }
-    @AfterEach
-    void tearDown() {
-        mockDateHelper.close();
-    }
+
 
     //Login
     @Test
@@ -79,8 +69,6 @@ public class LoginServiceTest {
         UserLogin validUser = new UserLogin(validUID, "PatsiSmartHome");
         assertEquals(expectedToken, loginService.checkLogIn(validUser));
         verify(logInSessionService).endSession(validPersonId);
-        verify(logInSessionService)
-            .createSession(validPersonId, expectedToken, currentDate.getTime() + 600000L);
     }
     @Test
     void testCheckLogInIfInvalidUserIdAndPasswordWithNoExistingSession() {

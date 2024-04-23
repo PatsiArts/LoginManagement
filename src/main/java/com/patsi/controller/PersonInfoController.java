@@ -2,6 +2,7 @@ package com.patsi.controller;
 
 import com.patsi.bean.Person;
 import com.patsi.service.PersonInfoService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +17,10 @@ public class PersonInfoController {
     PersonInfoService personInfoService;
 
     @GetMapping("/TestEmail")
-    public void test () {
-        personInfoService.testEmail();
+    public void testEmail() throws MessagingException {
+        System.out.println("Test Email");
+        personInfoService.sendEmailTest();
     }
-
     @PostMapping
     public boolean registerPerson(@RequestBody Person person) {
         System.out.println("In controller person userId " + person.getUserId());
