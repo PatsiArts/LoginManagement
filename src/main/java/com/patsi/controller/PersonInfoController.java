@@ -2,7 +2,7 @@ package com.patsi.controller;
 
 import com.patsi.bean.Person;
 import com.patsi.service.PersonInfoService;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +17,7 @@ public class PersonInfoController {
     PersonInfoService personInfoService;
 
     @PostMapping
-    public boolean registerPerson(@RequestBody Person person) {
+    public boolean registerPerson(@RequestBody Person person) throws MessagingException{
         System.out.println("In controller person userId " + person.getUserId());
         return personInfoService.registerPerson(person);
     }
