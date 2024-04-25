@@ -9,12 +9,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Supplier;
 import java.security.SecureRandom;
-import java.util.Base64;
 
 @Service
 public class LogInSessionService {
@@ -64,10 +61,14 @@ public class LogInSessionService {
     }
 
     public boolean renewSession(String token) {
-        LogInSession s = sessionRepository.findBySessionToken(token);
-        Long expiryTime = System.currentTimeMillis() + 600000L;
-        s.setExpiryTime(expiryTime);
-        return true;
+        String sessionToken = TokenHelper.removeBearer(token);
+        return Optional.ofNullable(sessionRepository.findBySessionToken(sessionToken))
+            .map(s -> {
+                Long expiryTime = System.currentTimeMillis() + 600000L;
+                s.setExpiryTime(expiryTime);
+                return true;
+            })
+            .orElse(false);
     }
 
     public String createUserToken() {
@@ -75,7 +76,5 @@ public class LogInSessionService {
         secureRandom.nextBytes(randomBytes);
         return base64Encoder.encodeToString(randomBytes);
     }
-
-    ;
 
 }

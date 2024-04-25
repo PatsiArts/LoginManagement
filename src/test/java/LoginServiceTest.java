@@ -35,8 +35,6 @@ public class LoginServiceTest {
     @Mock
     private LogInSessionService logInSessionService;
 
-//    private MockedStatic<DateHelper> mockDateHelper = mockStatic(DateHelper.class);
-
     //Login
     final String validUID = "Patsi";
     final UUID validPersonId = UUID.randomUUID();
