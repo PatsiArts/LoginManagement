@@ -9,6 +9,7 @@ import com.patsi.service.LogInSessionService;
 import com.patsi.service.LoginService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -41,7 +42,7 @@ public class LoginServiceTest {
     final String validUID = "Patsi";
     final UUID validPersonId = UUID.randomUUID();
     final Person validPerson = new Person(validPersonId, "Patsi", "Patsi",
-        "patsi@gmail.com","PatsiSmartHome", "PatsiSmartHome");
+        "patsi@gmail.com", "PatsiSmartHome");
     final LogInSession expectedLoginSession = new LogInSession();
     final String expectedToken = "test-token-123";
     final Date currentDate = new Date();
@@ -51,7 +52,7 @@ public class LoginServiceTest {
 
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         when(logInSessionService.findPerson(validUID))
             .thenReturn(new Person());
         when(personRepository.findByUserId("Patsi"))
@@ -70,6 +71,7 @@ public class LoginServiceTest {
         assertEquals(expectedToken, loginService.checkLogIn(validUser));
         verify(logInSessionService).endSession(validPersonId);
     }
+
     @Test
     void testCheckLogInIfInvalidUserIdAndPasswordWithNoExistingSession() {
         when(sessionRepository.findByCustomerId(validPersonId))
@@ -79,6 +81,7 @@ public class LoginServiceTest {
         verify(logInSessionService).findPerson(any());
         verify(logInSessionService, never()).endSession(validPersonId);
     }
+
     @Test
     void testCheckLogInIfInvalidUserIdAndPassword() {
         UserLogin user2 = new UserLogin("targetUid", "WrongPassword");
@@ -89,12 +92,13 @@ public class LoginServiceTest {
 
     //Logout
     @Test
-    void testLogoutWithValidToken(){
+    void testLogoutWithValidToken() {
         assertEquals(true, loginService.logOut(validToken));
         verify(logInSessionService).endSessionByToken(validToken);
     }
+
     @Test
-    void testLogoutWithInvalidToken(){
+    void testLogoutWithInvalidToken() {
         assertEquals(true, loginService.logOut(invalidToken));
         verify(logInSessionService).endSessionByToken(invalidToken);
     }

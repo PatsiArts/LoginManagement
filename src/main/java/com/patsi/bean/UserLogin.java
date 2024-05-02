@@ -1,6 +1,6 @@
 package com.patsi.bean;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserLogin {
+    @Column(name = "USERID")
     private String userId;
-    private String logInPasswordHashed;
+    private String password;
 }

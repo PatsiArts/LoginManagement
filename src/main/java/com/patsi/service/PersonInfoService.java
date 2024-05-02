@@ -8,6 +8,7 @@ import jakarta.mail.MessagingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,8 @@ public class PersonInfoService {
     EmailService emailService;
     Logger log = LoggerFactory.getLogger(PersonInfoService.class);
 
+    @Value("${enableEmail}")
+    boolean enableEmail;
 
     //Check if useId exists
     public boolean getPerson(String userId) {
@@ -40,7 +43,9 @@ public class PersonInfoService {
             return false;
         } else {
             personRepository.save(person);
-            sendEmailTest(person);
+            if (enableEmail) {
+                sendEmailTest(person);
+            }
             return true;
         }
     }
