@@ -25,19 +25,18 @@ public class LoginService {
 
     public String checkLogIn(UserLogin user) {
         if (logInSessionService.findPerson(user.getUserId()) != null) {
-            System.out.println("1");
             Person p = personRepository.findByUserId(user.getUserId()).orElse(null);
             if (p.getPassword().equals(user.getPassword())) {
                 log.info("Successfully authenticated!");
-                String tmptoken = logInSessionService.createUserToken();
+                String tmpToken = logInSessionService.createUserToken();
                 Long expiryTime = DateHelper.getCurrentDate().getTime() + 600000L;
                 if (sessionRepository.findByCustomerId(p.getUid()).isPresent()) {
                     logInSessionService.endSession(p.getUid());
-                    logInSessionService.createSession(p.getUid(), tmptoken, expiryTime);
-                    return tmptoken;
+                    logInSessionService.createSession(p.getUid(), tmpToken, expiryTime);
+                    return tmpToken;
                 } else {
-                    logInSessionService.createSession(p.getUid(), tmptoken, expiryTime);
-                    return tmptoken;
+                    logInSessionService.createSession(p.getUid(), tmpToken, expiryTime);
+                    return tmpToken;
                 }
             }
         }
