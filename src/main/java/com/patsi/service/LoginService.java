@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 public class LoginService {
 
     @Autowired
-    PersonRepository personRepository;
+    private PersonRepository personRepository;
     @Autowired
-    SessionRepository sessionRepository;
+    private SessionRepository sessionRepository;
     @Autowired
-    LogInSessionService logInSessionService;
+    private LogInSessionService logInSessionService;
 
     Logger log = LoggerFactory.getLogger(LoginService.class);
 

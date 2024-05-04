@@ -17,14 +17,15 @@ import java.util.List;
 public class PersonInfoService {
 
     @Autowired
-    PersonRepository personRepository;
+    private PersonRepository personRepository;
 
     @Autowired
-    EmailService emailService;
+    private EmailService emailService;
+
+    @Autowired
+    private FlagToggleServices flagToggleServices;
     Logger log = LoggerFactory.getLogger(PersonInfoService.class);
 
-    @Value("${enableEmail}")
-    boolean enableEmail;
 
     //Check if useId exists
     public boolean getPerson(String userId) {
@@ -43,7 +44,7 @@ public class PersonInfoService {
             return false;
         } else {
             personRepository.save(person);
-            if (enableEmail) {
+            if (flagToggleServices.getEnableEmailFlag()) {
                 sendEmailTest(person);
             }
             return true;
