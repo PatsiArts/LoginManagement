@@ -37,8 +37,7 @@ public class LoginSessionServiceTest {
     final String token = "Bearer Token";
     final Long expiryTime = System.currentTimeMillis() + 600000L;
     LogInSession logInSession = new LogInSession(uid, token, expiryTime);
-    Person person = new Person(uid, "userId", "name", "unitTest@gmail.com",
-        "password");
+    Person person = new Person(uid, "userId", "name", "unitTest@gmail.com", "password");
 
     @BeforeEach
     void setUp() {
@@ -122,5 +121,5 @@ public class LoginSessionServiceTest {
         assertEquals(false, result);
     }
 
-
 }
+
