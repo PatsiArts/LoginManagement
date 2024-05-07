@@ -16,7 +16,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 public class LogInSessionController {
     @Autowired
-    LogInSessionService logInSessionService;
+    private LogInSessionService logInSessionService;
 
     @GetMapping
     public Person findPersonByToken(@RequestHeader(AUTHORIZATION) String token) {

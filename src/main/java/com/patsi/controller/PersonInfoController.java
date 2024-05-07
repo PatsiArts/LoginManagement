@@ -14,7 +14,7 @@ import java.util.List;
 public class PersonInfoController {
 
     @Autowired
-    PersonInfoService personInfoService;
+    private PersonInfoService personInfoService;
 
     @PostMapping
     public boolean registerPerson(@RequestBody Person person) throws MessagingException {

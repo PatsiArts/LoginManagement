@@ -32,16 +32,4 @@ public class LoginController {
         return true;
     }
 
-//    @DeleteMapping
-//    public boolean logout(@RequestBody String userId) {
-//        return loginService.logout(userId);
-//    }
-
-//    @GetMapping
-//    public HttpServletResponse test(HttpServletRequest request, HttpServletResponse rsp) {
-//        rsp.addCookie(new Cookie("ssoToke", "get token"));
-//
-//        return new HttpServletResponse();
-//    }
-
 }

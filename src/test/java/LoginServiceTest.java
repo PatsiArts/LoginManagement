@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.Date;
 import java.util.Optional;
@@ -24,6 +25,7 @@ import java.util.UUID;
 
 @SpringBootTest(classes = Main.class)
 @ActiveProfiles("test")
+//@TestPropertySource(locations="classpath:test.properties")
 public class LoginServiceTest {
 
     @InjectMocks

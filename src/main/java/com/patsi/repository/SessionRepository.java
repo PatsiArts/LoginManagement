@@ -2,13 +2,15 @@ package com.patsi.repository;
 
 import com.patsi.bean.LogInSession;
 import jakarta.transaction.Transactional;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface SessionRepository extends Repository<LogInSession, UUID> {
+@Repository
+public interface SessionRepository extends JpaRepository<LogInSession, UUID> {
     LogInSession save(LogInSession logInSession);
 
     List<LogInSession> findAll();
