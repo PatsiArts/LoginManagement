@@ -7,6 +7,7 @@ import com.patsi.repository.PersonRepository;
 import com.patsi.repository.SessionRepository;
 import com.patsi.service.LogInSessionService;
 import com.patsi.service.LoginService;
+import com.patsi.service.LoginValueServices;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,9 +16,12 @@ import static org.mockito.Mockito.*;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Date;
 import java.util.Optional;
@@ -25,7 +29,10 @@ import java.util.UUID;
 
 @SpringBootTest(classes = Main.class)
 @ActiveProfiles("test")
-//@TestPropertySource(locations="classpath:test.properties")
+@TestPropertySource(properties = {"saltForPasswordEncryption = 8ab15c1c1c271e297c3f6d34e695b3f8",
+    "algorithmForPasswordEncryption = SHA3-256"}
+)
+//@TestPropertySource(locations="classpath:application-test.properties")
 public class LoginServiceTest {
 
     @InjectMocks
@@ -37,12 +44,14 @@ public class LoginServiceTest {
     private SessionRepository sessionRepository;
     @Mock
     private LogInSessionService logInSessionService;
+    @Mock
+    private LoginValueServices loginValueServices;
 
     //Login
-    final String validUID = "Patsi";
+    final String validUID = "TestSalt2";
     final UUID validPersonId = UUID.randomUUID();
-    final Person validPerson = new Person(validPersonId, "Patsi", "Patsi",
-        "patsi@gmail.com", "PatsiSmartHome");
+    final Person validPerson = new Person(validPersonId, "TestSalt2", "TestSalt2",
+        "patsi@gmail.com", "da39dc482848b95ee4370158fbd42ac4e8056e118795abe781531fe36a9b0527");
     final LogInSession expectedLoginSession = new LogInSession();
     final String expectedToken = "test-token-123";
     final Date currentDate = new Date();
@@ -55,19 +64,23 @@ public class LoginServiceTest {
     void setUp() {
         when(logInSessionService.findPerson(validUID))
             .thenReturn(new Person());
-        when(personRepository.findByUserId("Patsi"))
+        when(personRepository.findByUserId("TestSalt2"))
             .thenReturn(Optional.of(validPerson));
         when(sessionRepository.findByCustomerId(validPersonId))
             .thenReturn(Optional.of(expectedLoginSession));
         when(logInSessionService.createUserToken())
             .thenReturn(expectedToken);
+        when(loginValueServices.getSaltProperties())
+            .thenReturn("8ab15c1c1c271e297c3f6d34e695b3f8");
+        when(loginValueServices.getAlgorithmProperties())
+            .thenReturn("SHA3-256");
     }
 
 
     //Login
     @Test
     void testCheckLogInIfValidUserIdAndPassword() {
-        UserLogin validUser = new UserLogin(validUID, "PatsiSmartHome");
+        UserLogin validUser = new UserLogin(validUID, "TestSalt2");
         assertEquals(expectedToken, loginService.checkLogIn(validUser));
         verify(logInSessionService).endSession(validPersonId);
     }
@@ -76,7 +89,7 @@ public class LoginServiceTest {
     void testCheckLogInIfInvalidUserIdAndPasswordWithNoExistingSession() {
         when(sessionRepository.findByCustomerId(validPersonId))
             .thenReturn(Optional.empty());
-        UserLogin user2 = new UserLogin(validUID, "PatsiSmartHome");
+        UserLogin user2 = new UserLogin(validUID, "TestSalt2");
         assertEquals(expectedToken, loginService.checkLogIn(user2));
         verify(logInSessionService).findPerson(any());
         verify(logInSessionService, never()).endSession(validPersonId);
@@ -84,7 +97,7 @@ public class LoginServiceTest {
 
     @Test
     void testCheckLogInIfInvalidUserIdAndPassword() {
-        UserLogin user2 = new UserLogin("targetUid", "WrongPassword");
+        UserLogin user2 = new UserLogin("TestSalt2", "WrongPassword");
         assertEquals(null, loginService.checkLogIn(user2));
         verify(logInSessionService).findPerson(any());
         verifyNoMoreInteractions(logInSessionService);
