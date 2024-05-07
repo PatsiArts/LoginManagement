@@ -35,10 +35,10 @@ public class LoginSessionServiceTest {
 
     final UUID uid = UUID.randomUUID();
     final String token = "Bearer Token";
+    final String invalidToken = "Bearer invalidToken";
     final Long expiryTime = System.currentTimeMillis() + 600000L;
     LogInSession logInSession = new LogInSession(uid, token, expiryTime);
-    Person person = new Person(uid, "userId", "name", "unitTest@gmail.com",
-        "userId", "password");
+    Person person = new Person(uid, "userId", "name", "unitTest@gmail.com", "password");
 
     @BeforeEach
     void setUp() {
@@ -54,6 +54,10 @@ public class LoginSessionServiceTest {
         try (MockedStatic<TokenHelper> tokenHelper = Mockito.mockStatic(TokenHelper.class)) {
             tokenHelper.when(() -> TokenHelper.removeBearer(token))
                 .thenReturn("Token");
+        }
+        try (MockedStatic<TokenHelper> tokenHelper = Mockito.mockStatic(TokenHelper.class)) {
+            tokenHelper.when(() -> TokenHelper.removeBearer(invalidToken))
+                .thenReturn("invalidToken");
         }
     }
 
@@ -117,10 +121,10 @@ public class LoginSessionServiceTest {
 
     @Test
     void renewSessionWithInvalidToken() {
-        boolean result = logInSessionService.renewSession("invalidToken");
+        boolean result = logInSessionService.renewSession(invalidToken);
         verify(sessionRepository).findBySessionToken("invalidToken");
         assertEquals(false, result);
     }
 
-
 }
+

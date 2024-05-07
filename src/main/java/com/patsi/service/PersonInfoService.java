@@ -8,6 +8,7 @@ import jakarta.mail.MessagingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,10 +17,13 @@ import java.util.List;
 public class PersonInfoService {
 
     @Autowired
-    PersonRepository personRepository;
+    private PersonRepository personRepository;
 
     @Autowired
-    EmailService emailService;
+    private EmailService emailService;
+
+    @Autowired
+    private FlagToggleServices flagToggleServices;
     Logger log = LoggerFactory.getLogger(PersonInfoService.class);
 
 
@@ -40,7 +44,9 @@ public class PersonInfoService {
             return false;
         } else {
             personRepository.save(person);
-            sendEmailTest(person);
+            if (flagToggleServices.getEnableEmailFlag()) {
+                sendEmailTest(person);
+            }
             return true;
         }
     }

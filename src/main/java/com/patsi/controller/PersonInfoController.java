@@ -14,17 +14,15 @@ import java.util.List;
 public class PersonInfoController {
 
     @Autowired
-    PersonInfoService personInfoService;
+    private PersonInfoService personInfoService;
 
     @PostMapping
-    public boolean registerPerson(@RequestBody Person person) throws MessagingException{
-        System.out.println("In controller person userId " + person.getUserId());
+    public boolean registerPerson(@RequestBody Person person) throws MessagingException {
         return personInfoService.registerPerson(person);
     }
 
     @GetMapping
     public boolean getPerson(@RequestParam String userId) {
-
         return personInfoService.getPerson(userId);
     }
 
