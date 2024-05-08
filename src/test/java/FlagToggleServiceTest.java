@@ -10,7 +10,6 @@ import static org.junit.Assert.assertTrue;
 
 
 @ActiveProfiles("test")
-
 @SpringBootTest(classes = Main.class)
 public class FlagToggleServiceTest {
 
