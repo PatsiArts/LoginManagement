@@ -1,12 +1,11 @@
 package com.patsi.validator;
 
+import com.common.utils.ValidationHelper;
 import com.patsi.annotations.IsUserName;
 import com.patsi.repository.ProfanityWordRepository;
-import com.patsi.utils.ValidationHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
