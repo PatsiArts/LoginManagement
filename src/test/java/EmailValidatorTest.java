@@ -1,7 +1,7 @@
-import com.common.utils.ValidationHelper;
+import com.common.validation.utils.ValidationHelper;
+import com.common.validation.validator.EmailValidator;
 import com.patsi.Main;
 import com.patsi.bean.Person;
-import com.patsi.validator.EmailValidator;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -33,7 +33,7 @@ public class EmailValidatorTest {
 
     @Test
     void testEmailValidatorWithValidEmail() {
-        assertEquals(null, emailValidator.validate(validPerson.getEmail(), field));
+        assertEquals(List.of(), emailValidator.validate(validPerson.getEmail(), field));
     }
 
     @Test

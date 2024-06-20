@@ -1,12 +1,10 @@
-import com.common.utils.ValidationHelper;
+import com.common.validation.validator.PasswordValidator;
 import com.patsi.Main;
 import com.patsi.bean.Person;
-import com.patsi.validator.EmailValidator;
-import com.patsi.validator.PasswordValidator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 

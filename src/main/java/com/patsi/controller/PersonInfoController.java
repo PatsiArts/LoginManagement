@@ -1,8 +1,8 @@
 package com.patsi.controller;
 
+import com.common.validation.service.ValidatorService;
 import com.patsi.bean.Person;
 import com.patsi.service.PersonInfoService;
-import com.patsi.service.ValidatorService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,16 +1,12 @@
-import com.common.utils.ValidationHelper;
+import com.common.validation.bean.ProfanityWords;
+import com.common.validation.repository.ProfanityWordsRepository;
 import com.patsi.Main;
 import com.patsi.bean.Person;
-import com.patsi.bean.ProfanityWords;
-import com.patsi.repository.ProfanityWordRepository;
-import com.patsi.utils.ListHelper;
-import com.patsi.validator.EmailValidator;
 import com.patsi.validator.UserNameValidation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -30,7 +26,7 @@ public class UserNameValidationTest {
     private UserNameValidation userNameValidation;
 
     @Mock
-    private ProfanityWordRepository profanityWordRepository;
+    private ProfanityWordsRepository profanityWordsRepository;
 
     final UUID validPersonId = UUID.randomUUID();
     final Person validPerson = new Person(validPersonId, "validUserID", "validUserName",
@@ -42,7 +38,7 @@ public class UserNameValidationTest {
 
     @BeforeEach
     void setup() {
-        when(profanityWordRepository.findAll())
+        when(profanityWordsRepository.findAll())
             .thenReturn(profanityWordList);
     }
 

@@ -1,8 +1,8 @@
 package com.patsi.validator;
 
-import com.common.utils.ValidationHelper;
+import com.common.validation.repository.ProfanityWordsRepository;
+import com.common.validation.utils.ValidationHelper;
 import com.patsi.annotations.IsUserName;
-import com.patsi.repository.ProfanityWordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,14 +12,14 @@ import java.util.Map;
 @Component
 public class UserNameValidation implements Validator {
     @Autowired
-    private ProfanityWordRepository profanityWordRepository;
+    private ProfanityWordsRepository profanityWordsRepository;
 
     public Class accept() {
         return IsUserName.class;
     }
 
     public List<String> validate(Object input, Map<String, Object> field) {
-        List<String> profanityWordList = profanityWordRepository.findAll().stream()
+        List<String> profanityWordList = profanityWordsRepository.findAll().stream()
             .map(profanityWords -> profanityWords.getWord())
             .toList();
         if (ValidationHelper.validateProfanity(input.toString(), profanityWordList)) {

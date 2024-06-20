@@ -1,7 +1,7 @@
 package com.patsi.bean;
 
-import com.patsi.annotations.IsEmail;
-import com.patsi.annotations.IsPassword;
+import com.common.validation.annotations.IsEmail;
+import com.common.validation.annotations.IsPassword;
 import com.patsi.annotations.IsUserName;
 import jakarta.persistence.*;
 
@@ -34,7 +34,7 @@ public class Person {
     private String email;
     @NotNull
     @NotEmpty
-    @IsPassword(min = 16, max = 30)
+    @IsPassword(min = 4)
     private String password;
 
 }

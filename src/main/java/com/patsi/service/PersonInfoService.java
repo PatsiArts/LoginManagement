@@ -1,7 +1,7 @@
 package com.patsi.service;
 
-import com.common.bean.Email;
-import com.common.service.EmailService;
+import com.common.email.bean.Email;
+import com.common.email.service.EmailService;
 import com.patsi.bean.Person;
 import com.patsi.repository.PersonRepository;
 import com.patsi.utils.SHAHelper;
