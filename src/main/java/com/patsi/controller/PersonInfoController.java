@@ -24,7 +24,7 @@ public class PersonInfoController {
 
     @PostMapping
     public List<String> registerPerson(@RequestBody @Valid Person person) throws MessagingException {
-        List<String> errList = validatorService.callValidator(person);
+        List<String> errList = validatorService.checkAnnotation(person);
         if (errList != null) {
             return errList;
         } else {
