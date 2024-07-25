@@ -1,4 +1,4 @@
-import com.common.service.EmailService;
+import com.common.email.service.EmailService;
 import com.patsi.Main;
 import com.patsi.bean.LogInSession;
 import com.patsi.bean.Person;
@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Date;
 import java.util.Optional;
