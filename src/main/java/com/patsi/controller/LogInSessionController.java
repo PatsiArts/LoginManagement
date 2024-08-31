@@ -30,7 +30,7 @@ public class LogInSessionController {
     }
 
     @PutMapping
-    public boolean renewToken(String token) {
+    public boolean renewToken(@RequestParam String token) {
         return logInSessionService.renewSession(token);
     }
 }

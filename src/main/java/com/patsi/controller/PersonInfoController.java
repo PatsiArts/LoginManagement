@@ -46,11 +46,11 @@ public class PersonInfoController {
         return personInfoService.registerVerifiedPerson(emailVerifyToken, email);
     }
 
-    //Todo: Delete after development
-    @GetMapping("/getAllPerson")
-    private List<Person> getAllPerson() {
-        return personInfoService.getAllPerson();
-    }
+    //Todo: Delete after development stage
+//    @GetMapping("/getAllPerson")
+//    private List<Person> getAllPerson() {
+//        return personInfoService.getAllPerson();
+//    }
 
     //Todo: Add validation and Store data for 30 days
     @DeleteMapping

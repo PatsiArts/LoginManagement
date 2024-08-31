@@ -21,7 +21,7 @@ public class LoginController {
     }
 
     @PostMapping("/logout")
-    public boolean logOut(String token) {
+    public boolean logOut(@RequestParam String token) {
         loginService.logOut(token);
         return true;
     }

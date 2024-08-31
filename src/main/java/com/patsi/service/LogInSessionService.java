@@ -49,7 +49,12 @@ public class LogInSessionService {
         String sessionToken = TokenHelper.removeBearer(token);
         Optional<LogInSession> sessionOptional = sessionRepository.findBySessionToken(sessionToken);
         return sessionOptional
-            .map(session -> personRepository.findById(session.getCustomerId()).orElse(null))
+            .map(session -> {
+                if (session.getExpiryTime() > System.currentTimeMillis()) {
+                    return personRepository.findById(session.getCustomerId()).orElse(null);
+                } else
+                    return null;
+            })
             .orElse(null);
     }
 
@@ -63,8 +68,9 @@ public class LogInSessionService {
 
         return sessionRepository.findBySessionToken(sessionToken)
             .map(session -> {
-                    session.setExpiryTime(newExpiryTime);
-                    return true;
+                session.setExpiryTime(newExpiryTime);
+                sessionRepository.save(session);
+                return true;
             })
             .orElse(false);
     }
